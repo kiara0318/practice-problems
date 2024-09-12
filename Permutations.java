@@ -2,29 +2,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Permutations {
-
+    
     public static void main(String[] args) {
-        List<String> elements = List.of("a", "b", "c");
+        List<String> elements = Arrays.asList("a", "b", "c");
         List<String> permutations = generatePermutations(elements);
-        System.out.println(permutations);
+        System.out.println(String.join(", ", permutations));
     }
 
-    public static List<String> generatePermutations(List<String> elements) {
-        List<String> result = new ArrayList<>();
-        findPermutations(elements, "", result);
-        return result;
+    static List<String> generatePermutations(List<String> elements) {
+        List<String> permutations = new ArrayList<String>();
+        buildPermutations(elements, "", permutations);
+        return permutations;
     }
 
-    private static void findPermutations(List<String> remainingElements, String currentPrefix, List<String> result) {
-        if (remainingElements.isEmpty()) {
-            result.add(currentPrefix);
-        } else {
-            for (int i = 0; i < remainingElements.size(); i++) {
-                String element = remainingElements.get(i);
-                List<String> newRemainingElements = new ArrayList<>(remainingElements);
-                newRemainingElements.remove(i);
-                findPermutations(newRemainingElements, currentPrefix + element, result);
-            }
+    static void buildPermutations(List<String> availableElements, String currentPermutation, List<String> permutations) {
+        if (availableElements.isEmpty()) {
+          permutations.add(currentPermutation);
+          return;
+        }
+
+        for (int i = 0; i < availableElements.size(); i++) {
+          String currentElement = availableElements.get(i);
+          List<String> remainingElements = new ArrayList<String>(availableElements);
+          remainingElements.remove(i);
+          buildPermutations(remainingElements, currentPermutation + currentElement, permutations);
         }
     }
 }
+
